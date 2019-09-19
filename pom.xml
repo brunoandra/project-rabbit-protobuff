@@ -31,7 +31,7 @@
         <!-- Third party library -->
         <lombok.version>1.16.20</lombok.version>
 
-        <sleuth.version>2.0.3.RELEASE</sleuth.version>
+        <sleuth.version>2.1.2.RELEASE</sleuth.version>
 
     </properties>
     <dependencyManagement>
