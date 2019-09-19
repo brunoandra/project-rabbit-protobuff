@@ -8,7 +8,6 @@ import br.com.metsys.rabbitprotobuff.pessoa.gateway.SavePersonGateway;
 import br.com.metsys.rabbitprotobuff.pessoa.gateway.database.exception.GatewayException;
 import br.com.metsys.rabbitprotobuff.pessoa.model.PersonDomain;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -20,7 +19,7 @@ public class CreatePersonUseCase {
     private FindPersonGateway findPersonGateway;
 
     @Autowired
-    public CreatePersonUseCase(SavePersonGateway savePersonGateway,@Qualifier("findPersonGatewayFeignImp") FindPersonGateway findPersonGateway) {
+    public CreatePersonUseCase(SavePersonGateway savePersonGateway,FindPersonGateway findPersonGateway) {
         this.savePersonGateway = savePersonGateway;
 
         this.findPersonGateway = findPersonGateway;

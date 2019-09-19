@@ -1,0 +1,18 @@
+version: '3'
+
+networks:
+  message_broker_network:
+
+services:
+  rabbitmq:
+    image: "rabbitmq:3-management"
+    hostname: "rabbit"
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    labels:
+      NAME: "rabbitmq"
+    volumes:
+      - ./config/rabbitmq:/etc/rabbitmq/rabbitmq.config
+    networks:
+      - message_broker_network

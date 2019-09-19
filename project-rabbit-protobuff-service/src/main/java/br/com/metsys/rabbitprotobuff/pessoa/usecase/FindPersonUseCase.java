@@ -6,7 +6,6 @@ import br.com.metsys.rabbitprotobuff.pessoa.gateway.FindPersonGateway;
 import br.com.metsys.rabbitprotobuff.pessoa.gateway.database.exception.GatewayException;
 import br.com.metsys.rabbitprotobuff.pessoa.model.PersonDomain;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -16,7 +15,7 @@ public class FindPersonUseCase {
     private FindPersonGateway findPersonGateway;
 
     @Autowired
-    public FindPersonUseCase(@Qualifier("findPersonGatewayImp") FindPersonGateway findPersonGateway) {
+    public FindPersonUseCase(FindPersonGateway findPersonGateway) {
         this.findPersonGateway = findPersonGateway;
     }
 
