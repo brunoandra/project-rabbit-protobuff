@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+option java_package = "br.com.metsys.rabbitprotobuff.pessoa";
+
+message personMessage {
+    uint32 id = 1;
+    string nome = 2;
+    string email = 3;
+    repeated personContactMessage contatos = 4;
+}
+
+message personContactMessage{
+    repeated string ddd = 5;
+    repeated string numero = 6;
+    repeated bool principal = 7;
+}
