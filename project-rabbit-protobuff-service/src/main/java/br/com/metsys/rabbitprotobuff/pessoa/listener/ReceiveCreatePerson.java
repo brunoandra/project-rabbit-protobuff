@@ -7,6 +7,9 @@ import br.com.metsys.rabbitprotobuff.pessoa.usecase.CreatePersonUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
+import org.springframework.messaging.handler.annotation.Headers;
+
+import java.util.Map;
 
 @EnableBinding({PersonCreatedSink.class})
 public class ReceiveCreatePerson {
@@ -19,7 +22,7 @@ public class ReceiveCreatePerson {
     }
 
     @StreamListener(target = PersonCreatedSink.INPUT)
-    public void execute(PersonDomain personDomain) throws UseCaseException {
+    public void execute(PersonDomain personDomain, @Headers Map<String, String> headers) throws UseCaseException {
         createPersonUseCase.execute(personDomain);
     }
 

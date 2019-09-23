@@ -15,13 +15,16 @@ spring:
       rabbit:
         bindings:
           person-created-input:
-            consumer.bindingRoutingKey: person-created-input
+            consumer:
+              bindingRoutingKey: person-created-input
+              autoBindDlq: true
       bindings:
         person-created-input:
           destination: person-topic
           contentType: application/json
           group: person-created-input
           binder: rabbit
+          consumer.max-attempts: 5
       binders:
         rabbit:
           type: rabbit

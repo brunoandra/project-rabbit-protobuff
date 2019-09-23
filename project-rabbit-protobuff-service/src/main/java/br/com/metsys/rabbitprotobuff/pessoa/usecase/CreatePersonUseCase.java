@@ -19,7 +19,7 @@ public class CreatePersonUseCase {
     private FindPersonGateway findPersonGateway;
 
     @Autowired
-    public CreatePersonUseCase(SavePersonGateway savePersonGateway,FindPersonGateway findPersonGateway) {
+    public CreatePersonUseCase(SavePersonGateway savePersonGateway, FindPersonGateway findPersonGateway) {
         this.savePersonGateway = savePersonGateway;
 
         this.findPersonGateway = findPersonGateway;
