@@ -39,6 +39,7 @@ public class CreatePersonUseCase {
             personDomainReturn = savePersonGateway.execute(personDomain);
             personCreatedPublisherGateway.publish(personDomain);
 
+            //throw new CreatePersonUseCaseException("Problema na criação da pessoa");
             //Optional<PersonDomain> personDomain1 = findPersonGateway.execute(personDomainReturn.getId());
 
 
