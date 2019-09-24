@@ -18,6 +18,12 @@ spring:
             consumer:
               bindingRoutingKey: person-created-input
               autoBindDlq: true
+          person-created-protobuf-input:
+            consumer:
+              bindingRoutingKey: person-created-protobuf-input
+              autoBindDlq: true
+          person-created-output:
+            producer.routingKeyExpression: '''person-created-protobuf-input'''
       bindings:
         person-created-input:
           destination: person-topic
@@ -25,6 +31,16 @@ spring:
           group: person-created-input
           binder: rabbit
           consumer.max-attempts: 5
+        person-created-protobuf-input:
+          destination: person-topic
+          contentType: application/protobuf
+          group: person-created-protobuf-input
+          binder: rabbit
+          consumer.max-attempts: 5
+        person-created-output:
+          destination: person-topic
+          contentType: application/protobuf
+          binder: rabbit
       binders:
         rabbit:
           type: rabbit
