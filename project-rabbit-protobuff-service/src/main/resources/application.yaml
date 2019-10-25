@@ -18,16 +18,16 @@ spring:
             consumer:
               bindingRoutingKey: person-created-input
               autoBindDlq: true
-              transacted: true
+#              transacted: true
           person-created-protobuf-input:
             consumer:
               bindingRoutingKey: person-created-protobuf-input
               autoBindDlq: true
-              transacted: true
+#              transacted: true
           person-created-output:
             producer:
               routingKeyExpression: '''person-created-protobuf-input'''
-              transacted: true
+#              transacted: true
       bindings:
         person-created-input:
           destination: person-topic
