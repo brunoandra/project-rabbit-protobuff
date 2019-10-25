@@ -11,8 +11,6 @@ import br.com.metsys.rabbitprotobuff.pessoa.model.PersonDomain;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 
 @Service
 public class CreatePersonUseCase {
@@ -28,7 +26,7 @@ public class CreatePersonUseCase {
         this.personCreatedPublisherGateway = personCreatedPublisherGateway;
     }
 
-    public PersonDomain execute(PersonDomain personDomain) throws UseCaseException {
+    public void execute(PersonDomain personDomain) throws UseCaseException {
         PersonDomain personDomainReturn;
         try {
             System.out.print(personDomain);
@@ -38,14 +36,11 @@ public class CreatePersonUseCase {
                             .setEmail(personDomain.getEmail()).build();
             System.out.print(personMessage.toByteString());
             System.out.print("\n");
-            personDomainReturn = savePersonGateway.execute(personDomain);
             personCreatedPublisherGateway.publish(personDomain);
 
-            //throw new CreatePersonUseCaseException("Problema na criação da pessoa");
-            Optional<PersonDomain> personDomain1 = findPersonGateway.execute(personDomainReturn.getId());
+            //personDomainReturn = savePersonGateway.execute(personDomain);
+            //Optional<PersonDomain> personDomain1 = findPersonGateway.execute(personDomainReturn.getId());
 
-
-            return personDomainReturn;
         } catch (GatewayException ex) {
             throw new CreatePersonUseCaseException("Problema na criação da pessoa", ex);
         }

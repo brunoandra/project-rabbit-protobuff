@@ -44,7 +44,7 @@
         </dependency>
         <dependency>
             <groupId>br.com.metsys</groupId>
-            <artifactId>agendaaqui-domain</artifactId>
+            <artifactId>project-rabbit-protobuff-domain</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>

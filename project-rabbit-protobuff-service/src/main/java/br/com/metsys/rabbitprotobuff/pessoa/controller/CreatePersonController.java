@@ -28,15 +28,14 @@ public class CreatePersonController implements CreatePersonApi {
     }
 
     @Override
-    public ResponseEntity<Long> execute(@RequestBody final CreatePersonRequest createPersonRequest, @RequestHeader Map<String, String> headers) throws UseCaseException {
+    public ResponseEntity<Void> execute(@RequestBody final CreatePersonRequest createPersonRequest, @RequestHeader Map<String, String> headers) throws UseCaseException {
         headers.forEach((key, value) -> {
             logger.info(String.format("Header '%s' = %s", key, value));
         });
         PersonDomain personDomain = CreatePersonRequestToPersonDomainTranslate.translator(createPersonRequest);
-        PersonDomain personDomainReturn = createPersonUseCase.execute(personDomain);
+        createPersonUseCase.execute(personDomain);
 
-        ResponseEntity<Long> response = new ResponseEntity<>(personDomainReturn.getId(), HttpStatus.OK);
-
+        ResponseEntity<Void> response = new ResponseEntity<>( HttpStatus.OK);
         return response;
     }
 }

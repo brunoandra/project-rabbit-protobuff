@@ -1,6 +1,6 @@
 package br.com.metsys.rabbitprotobuff.pessoa;
 
-import br.com.metsys.agendaaqui.pessoa.exception.UseCaseException;
+import br.com.metsys.rabbitprotobuff.pessoa.exception.UseCaseException;
 import br.com.metsys.rabbitprotobuff.pessoa.model.CreatePersonRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,5 +13,5 @@ import java.util.Map;
 @RequestMapping("person")
 public interface CreatePersonApi {
     @PostMapping
-    ResponseEntity<Long> execute(@RequestBody CreatePersonRequest createPersonRequest, @RequestHeader Map<String, String> headers) throws UseCaseException;
+    ResponseEntity<Void> execute(@RequestBody CreatePersonRequest createPersonRequest, @RequestHeader Map<String, String> headers) throws UseCaseException;
 }
