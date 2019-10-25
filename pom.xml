@@ -23,6 +23,7 @@
     <modules>
         <module>project-rabbit-protobuff-domain</module>
         <module>project-rabbit-protobuff-service</module>
+        <module>project-rabbit-protobuff-client</module>
     </modules>
 
     <properties>
