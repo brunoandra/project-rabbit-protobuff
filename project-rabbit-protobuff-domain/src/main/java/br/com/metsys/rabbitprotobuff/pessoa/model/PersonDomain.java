@@ -3,7 +3,6 @@ package br.com.metsys.rabbitprotobuff.pessoa.model;
 import lombok.*;
 
 import java.io.Serializable;
-import java.util.List;
 
 @Builder
 @Getter
@@ -24,6 +23,6 @@ public class PersonDomain implements Serializable {
 
     private String email;
 
-    private List<PersonContactDomain> contatos;
+//    private List<PersonContactDomain> contatos;
 
 }

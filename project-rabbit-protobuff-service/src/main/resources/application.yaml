@@ -23,25 +23,36 @@ spring:
             consumer:
               bindingRoutingKey: person-created-protobuf-input
               autoBindDlq: true
+              dlqTtl: 1000
+              dlqDeadLetterExchange:
+#              deadLetterQueueName: fila-erro-person
 #              transacted: true
           person-created-output:
             producer:
-              routingKeyExpression: '''person-created-protobuf-input'''
+              routingKeyExpression: '''person-created-input'''
 #              transacted: true
+          person-created-protobuff-output:
+            producer:
+              routingKeyExpression: '''person-created-protobuf-input'''
+          #              transacted: true
       bindings:
         person-created-input:
           destination: person-topic
           contentType: application/json
           group: person-created-input
           binder: rabbit
-          consumer.max-attempts: 5
+          consumer.max-attempts: 2
         person-created-protobuf-input:
           destination: person-topic
           contentType: application/protobuf
           group: person-created-protobuf-input
           binder: rabbit
-          consumer.max-attempts: 5
+          consumer.max-attempts: 2
         person-created-output:
+          destination: person-topic
+          contentType: application/json
+          binder: rabbit
+        person-created-protobuff-output:
           destination: person-topic
           contentType: application/protobuf
           binder: rabbit

@@ -24,7 +24,6 @@ public class ReceiveCreatePerson {
     @StreamListener(target = PersonCreatedSink.INPUT)
     public void execute(PersonDomain personDomain, @Headers Map<String, String> headers) throws UseCaseException {
         createPersonUseCase.execute(personDomain);
-        System.out.print("PAssou aqui\n");
     }
 
 }

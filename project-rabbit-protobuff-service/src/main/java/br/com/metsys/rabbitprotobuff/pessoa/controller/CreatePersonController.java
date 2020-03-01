@@ -3,9 +3,12 @@ package br.com.metsys.rabbitprotobuff.pessoa.controller;
 import br.com.metsys.rabbitprotobuff.pessoa.CreatePersonApi;
 import br.com.metsys.rabbitprotobuff.pessoa.controller.translate.CreatePersonRequestToPersonDomainTranslate;
 import br.com.metsys.rabbitprotobuff.pessoa.exception.UseCaseException;
+import br.com.metsys.rabbitprotobuff.pessoa.gateway.rabbitmq.PersonCreatedJsonPublisherGatewayImp;
+import br.com.metsys.rabbitprotobuff.pessoa.gateway.rabbitmq.PersonCreatedProtobuffPublisherGatewayImp;
 import br.com.metsys.rabbitprotobuff.pessoa.model.CreatePersonRequest;
 import br.com.metsys.rabbitprotobuff.pessoa.model.PersonDomain;
-import br.com.metsys.rabbitprotobuff.pessoa.usecase.CreatePersonUseCase;
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,24 +21,35 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 @RestController
+@RequiredArgsConstructor
 public class CreatePersonController implements CreatePersonApi {
-    private CreatePersonUseCase createPersonUseCase;
+    @Autowired
+    private PersonCreatedJsonPublisherGatewayImp personCreatedJsonPublisherGateway;
+    @Autowired
+    private PersonCreatedProtobuffPublisherGatewayImp personCreatedProtobuffPublisherGateway;
+
     private Logger logger = LoggerFactory.getLogger(CreatePersonController.class);
 
-    @Autowired
-    public CreatePersonController(CreatePersonUseCase createPersonUseCase) {
-        this.createPersonUseCase = createPersonUseCase;
-    }
 
+    @SneakyThrows
     @Override
     public ResponseEntity<Void> execute(@RequestBody final CreatePersonRequest createPersonRequest, @RequestHeader Map<String, String> headers) throws UseCaseException {
-        headers.forEach((key, value) -> {
-            logger.info(String.format("Header '%s' = %s", key, value));
-        });
-        PersonDomain personDomain = CreatePersonRequestToPersonDomainTranslate.translator(createPersonRequest);
-        createPersonUseCase.execute(personDomain);
+        try{
+            headers.forEach((key, value) -> {
+                logger.info(String.format("Header '%s' = %s", key, value));
+            });
+            PersonDomain personDomain = CreatePersonRequestToPersonDomainTranslate.translator(createPersonRequest);
 
-        ResponseEntity<Void> response = new ResponseEntity<>( HttpStatus.OK);
-        return response;
+            personCreatedJsonPublisherGateway.publish(personDomain);
+            personCreatedProtobuffPublisherGateway.publish(personDomain);
+
+            ResponseEntity<Void> response = new ResponseEntity<>( HttpStatus.OK);
+            return response;
+        }catch (Exception e)
+        {
+            logger.error(e.getMessage(), e);
+            throw e;
+        }
+
     }
 }

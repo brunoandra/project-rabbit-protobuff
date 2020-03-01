@@ -1,13 +1,13 @@
 package br.com.metsys.rabbitprotobuff.pessoa.listener;
 
-import br.com.metsys.rabbitprotobuff.pessoa.exception.UseCaseException;
 import br.com.metsys.rabbitprotobuff.pessoa.gateway.PersonMessage;
 import br.com.metsys.rabbitprotobuff.pessoa.gateway.rabbitmq.sink.PersonCreatedProtobufSink;
+import br.com.metsys.rabbitprotobuff.pessoa.model.PersonDomain;
 import br.com.metsys.rabbitprotobuff.pessoa.usecase.CreatePersonUseCase;
-import com.google.protobuf.InvalidProtocolBufferException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
+import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Headers;
 
 import java.util.Map;
@@ -23,11 +23,12 @@ public class ReceiveCreatePersonProtobuff {
     }
 
     @StreamListener(target = PersonCreatedProtobufSink.INPUT)
-    public void execute(byte[] personDomain, @Headers Map<String, String> headers) throws UseCaseException, InvalidProtocolBufferException {
-        PersonMessage.personMessage personMessage = PersonMessage.personMessage.parseFrom(personDomain);
-        //createPersonUseCase.execute(personDomain);
-        System.out.print(personMessage.toByteString());
-        System.out.print("\n");
+    public void execute(byte[] personDomainByte, @Headers Map<?, ?> headers, @Header(name = "x-death", required = false) Map<?, ?> death) throws Exception {
+        PersonMessage.personMessage personMessage = PersonMessage.personMessage.parseFrom(personDomainByte);
+        PersonDomain personDomain = PersonDomain.builder().nome(personMessage.getNome())
+                .email(personMessage.getEmail())
+                .build();
+        createPersonUseCase.execute(personDomain);
     }
 
 }
